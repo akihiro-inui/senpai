@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { createUser } from "../api/users";
 
 class SignUpForm extends Component {
   constructor() {
@@ -30,6 +31,7 @@ class SignUpForm extends Component {
     e.preventDefault();
 
     console.log("The form was submitted with the following data:");
+    createUser(this.state)
     console.log(this.state);
   }
 
