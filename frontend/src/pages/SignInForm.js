@@ -4,6 +4,7 @@ import {
   FacebookLoginButton,
   InstagramLoginButton
 } from "react-social-login-buttons";
+import { loginUser } from "../api/login"
 
 class SignInForm extends Component {
   constructor() {
@@ -11,7 +12,8 @@ class SignInForm extends Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      jwt_token: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,7 +32,7 @@ class SignInForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
+    loginUser(this.state)
     console.log("The form was submitted with the following data:");
     console.log(this.state);
   }

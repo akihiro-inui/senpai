@@ -53,3 +53,8 @@ class UserDelete(BaseModel):
     Fields information needed for Delete
     """
     id: int
+
+
+class UserLogin(BaseModel):
+    email: str
+    password: str

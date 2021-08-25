@@ -12,4 +12,5 @@ function createUser(requestBody) {
     .then(res => res.json())
     .then(res => console.log(res));
 }
+
 export {createUser}
