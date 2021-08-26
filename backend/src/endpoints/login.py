@@ -26,7 +26,7 @@ def login_user_by_id(user: UserLogin, db: Session = Depends(DBC.get_session)):
             token = encode_auth_token(retrieved_user.id, 1000)
             return {"jwt_token": token}
         else:
-            return {"jwt_token": "wrong password"}
+            return {"jwt_token": None}
 
     except sqlalchemy.orm.exc.NoResultFound:
         raise Exception(f"{user.email} does not exist")

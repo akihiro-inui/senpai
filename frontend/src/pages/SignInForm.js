@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Router, Link } from "react-router-dom";
 import {
   FacebookLoginButton,
   InstagramLoginButton
 } from "react-social-login-buttons";
-import { loginUser } from "../api/login"
+import { loginUser } from "../api/login";
+import TopPage from "./TopPage";
+import Navigation from "../navigation";
 
 class SignInForm extends Component {
   constructor() {
@@ -13,7 +15,6 @@ class SignInForm extends Component {
     this.state = {
       email: "",
       password: "",
-      jwt_token: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -38,11 +39,15 @@ class SignInForm extends Component {
         loginUser(this.state).then(data => {
           const jwt_token = data['jwt_token']
         if(jwt_token==null){
+          alert("Email or password is not correct");
           console.log("Email or password is not correct")
         }
         else{
           localStorage.setItem('jwt_token', jwt_token);
           console.log("Successfully logged in");
+
+          // If user signed in, redirect to top page
+          this.props.history.push('/top');
         }
         });
     }
@@ -92,11 +97,13 @@ class SignInForm extends Component {
             </Link>
           </div>
 
+          {/* TODO: Implement this */}
           <div className="socialMediaButtons">
             <div className="facebookButton">
               <FacebookLoginButton onClick={() => alert("Hello")} />
             </div>
 
+          {/* TODO: Implement this */}
             <div className="instagramButton">
               <InstagramLoginButton onClick={() => alert("Hello")} />
             </div>
