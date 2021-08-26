@@ -32,9 +32,23 @@ class SignInForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    loginUser(this.state)
-    console.log("The form was submitted with the following data:");
-    console.log(this.state);
+
+    try {
+        // Try to get jwt token by logging in
+        loginUser(this.state).then(data => {
+          const jwt_token = data['jwt_token']
+        if(jwt_token==null){
+          console.log("Email or password is not correct")
+        }
+        else{
+          localStorage.setItem('jwt_token', jwt_token);
+          console.log("Successfully logged in");
+        }
+        });
+    }
+    catch(error) {
+      console.log("Unexpected Error");
+    }
   }
 
   render() {

@@ -14,7 +14,7 @@
     "web-vitals": "^2.1.0"
   },
   "devDependencies": {
-    "typescript": "3.3.3"
+    "typescript": "^3.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
