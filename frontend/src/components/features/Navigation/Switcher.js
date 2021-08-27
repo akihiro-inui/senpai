@@ -1,31 +1,36 @@
 import React from "react"
 import { Switch, Route } from "react-router-dom"
-import TestPage from "../pages/TestPage"
-import Login from "../pages/Login"
-import SignUp from "../pages/SignUp"
+import Home, {
+    FeaturesPage,
+    ProductsPage,
+    CustomersPage,
+    SalesPage,
+    LoginPage,
+    SignUpPage
+} from "../../../pages"
 
 const Switcher = () => (
     <Switch>
         <Route path="/features">
-            <TestPage />
+            <FeaturesPage />
         </Route>
         <Route path="/products">
-            <TestPage />
+            <ProductsPage />
         </Route>
         <Route path="/customers">
-            <TestPage />
+            <CustomersPage />
         </Route>
         <Route path="/sales">
-            <TestPage />
+            <SalesPage />
         </Route>
         <Route path="/login">
-            <Login />
+            <LoginPage />
         </Route>
         <Route path="/signup">
-            <SignUp />
+            <SignUpPage />
         </Route>
         <Route path="/">
-            <TestPage />
+            <Home />
         </Route>
     </Switch>)
 
