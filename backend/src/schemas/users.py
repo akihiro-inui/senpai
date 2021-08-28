@@ -39,9 +39,9 @@ class UserUpdate(BaseModel):
     """
     Fields information needed for Update
     """
-    id: int
+    id: Optional[int]
     name: Optional[str]
-    email: Optional[str]
+    email: str
     gender: Optional[str]
     country: Optional[str]
     birthdate: Optional[date]
@@ -52,9 +52,14 @@ class UserDelete(BaseModel):
     """
     Fields information needed for Delete
     """
-    id: int
+    email: str
 
 
 class UserLogin(BaseModel):
     email: str
     password: str
+
+
+class UserGet(BaseModel):
+    id: int
+    email: str

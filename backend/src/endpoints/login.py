@@ -4,11 +4,10 @@ from fastapi import Depends, APIRouter
 from ..schemas.users import UserLogin
 from ..orm_models.db_models import UserModel
 from . import DBC
-from src.logic.hasher import Hasher
-from src.logic.jwt_handler import encode_auth_token
+from . import hasher
+from src.logic_layer.jwt_handler import encode_auth_token
 
 
-hasher = Hasher()
 router = APIRouter()
 
 
