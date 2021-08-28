@@ -1,8 +1,9 @@
 import React from "react"
-import { Switch, Route } from "react-router-dom"
+import { Switch, Route, AuthRoute} from "react-router-dom"
 import TestPage from "../pages/TestPage"
 import Login from "../pages/Login"
 import SignUp from "../pages/SignUp"
+import MyPage from "../pages/Mypage"
 
 const Switcher = () => (
     <Switch>
@@ -27,6 +28,9 @@ const Switcher = () => (
         <Route path="/">
             <TestPage />
         </Route>
+        <AuthRoute path="/mypage">
+            <MyPage />
+        </AuthRoute>
     </Switch>)
 
 export default Switcher

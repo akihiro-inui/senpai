@@ -8,6 +8,7 @@ const Name = () => {
     const name = {
         type: "name",
         id: "name",
+        name: "name",
         placeholder: "Your Name",
         isFocused: false
     };

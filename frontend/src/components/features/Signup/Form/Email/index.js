@@ -5,8 +5,9 @@ import Label from "../../../../library/Label"
 const Email = () => {
 
     const email = {
-        type: "password",
-        id: "password",
+        type: "email",
+        id: "email",
+        name: "email",
         placeholder: "You@example.com",
         isFocused: true
     };

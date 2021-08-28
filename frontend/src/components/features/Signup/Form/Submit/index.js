@@ -1,12 +1,12 @@
 import React from "react"
-import { BrandButtonLarge as SignInButton } from "../../../../library/Button"
+import { BrandButtonLarge as SignUp } from "../../../../library/Button"
 
 
 const SignUpButton = () => {
 
     const signup = (e) => e.preventDefault()
-
-    return <SignInButton
+    
+    return <SignUp
         type="submit"
         value="Sign up"
         event={signup}

@@ -9,6 +9,7 @@ const Password = () => {
     const password = {
         type: "password",
         id: "password",
+        name: "password",
         placeholder: "••••••••••",
         isFocused: false
     };
