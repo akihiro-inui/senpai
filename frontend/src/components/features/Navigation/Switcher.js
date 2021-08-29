@@ -6,7 +6,8 @@ import Home, {
     CustomersPage,
     SalesPage,
     LoginPage,
-    SignUpPage
+    SignUpPage,
+    MyPage
 } from "../../../pages"
 
 const Switcher = () => (
@@ -28,6 +29,9 @@ const Switcher = () => (
         </Route>
         <Route path="/signup">
             <SignUpPage />
+        </Route>
+        <Route path="/mypage">
+            <MyPage />
         </Route>
         <Route path="/">
             <Home />
