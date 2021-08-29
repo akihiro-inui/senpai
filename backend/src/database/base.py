@@ -2,11 +2,14 @@ import os
 import sys
 sys.path.insert(0, os.getcwd())
 
+import pkg_resources
 from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.schema import CreateSchema
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
+from alembic.config import Config
+from alembic.command import upgrade, downgrade
 from src.utils.custom_error_handlers import DBError
 from src.utils.common_logger import logger
 from src.settings import load_config
@@ -16,54 +19,71 @@ from src.orm_models.db_models import BaseModel
 class DBConnector:
     def __init__(self):
         self.Meta = MetaData()
+
+    def process_db(self):
+        """
+        Case A: If database does not exist, Create DB, Schema, Tables
+        Case B: If database exists, run Alembic upgrade
+        """
         self.__check_config()
-        self.__init_db()
-        self.__init_schemas()
-        self.__initialize_tables()
+        self.engine = create_engine(self.connection_string)
+
+        # Create or upgrade DB
+        is_created = self._create_db() if not database_exists(self.engine.url) else self._upgrade_db()
+
+        # Create schemas and tables only if database was initialized
+        self._create_schemas() if is_created is True else None
+        self._create_tables() if is_created is True else None
+
+        # Create DB session
         self.__init_session_maker()
 
     def __check_config(self):
+        """
+        Check the database parameter was given from environment variable or from file.
+        Create connection string to the database.
+        """
         # Load parameters from .ENV
         if os.path.isfile('.ENV'):
             load_config('.ENV')
 
-        self.DB_USER = os.environ.get('DB_USER')
-        self.DB_PASSWORD = os.environ.get('DB_PASSWORD')
-        self.DB_HOST = os.environ.get('DB_HOST')
-        self.DB_PORT = os.environ.get('DB_PORT')
-        self.DB_NAME = os.environ.get('DB_NAME')
-        self.DB_SCHEMAS = os.environ.get('DB_SCHEMAS').split()
+        self.DB_USER = os.environ.get('SENPAI_DB_USER')
+        self.DB_PASSWORD = os.environ.get('SENPAI_DB_PASSWORD')
+        self.DB_HOST = os.environ.get('SENPAI_DB_HOST')
+        self.DB_PORT = os.environ.get('SENPAI_DB_PORT')
+        self.DB_NAME = os.environ.get('SENPAI_DB_NAME')
+        self.DB_SCHEMAS = os.environ.get('SENPAI_DB_SCHEMAS').split()
 
         # Check required fields exist
-        if None in [os.environ.get('DB_USER'),
-                    os.environ.get('DB_PASSWORD'),
-                    os.environ.get('DB_HOST'),
-                    os.environ.get('DB_PORT'),
-                    os.environ.get('DB_NAME'),
-                    os.environ.get('DB_SCHEMAS')]:
+        if None in [self.DB_USER,
+                    self.DB_PASSWORD,
+                    self.DB_HOST,
+                    self.DB_PORT,
+                    self.DB_NAME,
+                    self.DB_SCHEMAS]:
             logger.error("Could not retrieve DB config")
             raise DBError("Could not retrieve DB config")
 
         # Create connection string
         self.connection_string = f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}/{self.DB_NAME}"
 
-    def __init_db(self):
+    def _create_db(self) -> bool:
         """
-        Create SQLAlchemy DB connector engine and create database if it does not exist
+        Create SQLAlchemy DB connector engine and create database
         """
-        self.engine = create_engine(self.connection_string)
-
         # Create database if it does not exist
-        if not database_exists(self.engine.url):
-            try:
-                create_database(self.engine.url)
-                logger.info("Successfully created database")
-            except Exception as err:
-                raise DBError(f"Failed to create database: {err}")
-        else:
-            logger.info("Database already exists. Skipping")
+        success = False
+        try:
+            create_database(self.engine.url)
+            logger.info("Successfully created database")
+            success = True
+        except Exception as err:
+            success = False
+            raise DBError(f"Failed to create database: {err}")
+        finally:
+            return success
 
-    def __init_schemas(self):
+    def _create_schemas(self):
         """
         Create SQLAlchemy DB connector engine and create schemas if they not exist
         """
@@ -79,7 +99,7 @@ class DBConnector:
             else:
                 logger.info(f"Schema {schema} already exists. Skipping")
 
-    def __initialize_tables(self):
+    def _create_tables(self):
         """
        Create SQLAlchemy DB connector engine and create tables
         """
@@ -100,6 +120,30 @@ class DBConnector:
         except Exception as err:
             raise DBError(f"Failed to create database session {err}")
 
+    @staticmethod
+    def _upgrade_db() -> None:
+        """
+        Executes Alembic update based on the file content of src/alembic/versions/{the_most_recent_version.py}
+        """
+        try:
+            alembic_file_path = pkg_resources.resource_filename("src", "alembic.ini")
+            upgrade(Config(alembic_file_path), "head")
+            logger.info("Successfully upgraded DB to alembic head")
+        except Exception as err:
+            raise DBError(message=f"Failed to upgrade DB: {err}")
+
+    @staticmethod
+    def _downgrade_db():
+        """
+        Executes Alembic downgrade based on the file content of src/alembic/versions/{the_most_recent_version.py}
+        """
+        try:
+            filepath = pkg_resources.resource_filename("src", "alembic.ini")
+            downgrade(Config(filepath), "base")
+            logger.info("Successfully downgraded DB to alembic base")
+        except Exception as err:
+            raise DBError(message=f"Failed to upgrade DB: {err}")
+
     def get_session(self):
         """
         Get DB session
@@ -109,7 +153,8 @@ class DBConnector:
         try:
             yield session
             session.commit()
-        except Exception:
+        except Exception as err:
+            logger.error(f"Error creating session to DB: {err}")
             session.rollback()
         finally:
             session.close()

@@ -4,11 +4,12 @@ import TestPage from "../pages/TestPage"
 import Login from "../pages/Login"
 import SignUp from "../pages/SignUp"
 import MyPage from "../pages/Mypage"
+import FindSenpaiPage from "../pages/FindSenpai"
 
 const Switcher = () => (
     <Switch>
-        <Route path="/features">
-            <TestPage />
+        <Route path="/findsenpai">
+            <FindSenpaiPage />
         </Route>
         <Route path="/products">
             <TestPage />

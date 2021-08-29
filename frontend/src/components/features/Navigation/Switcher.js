@@ -1,7 +1,7 @@
 import React from "react"
 import { Switch, Route } from "react-router-dom"
 import Home, {
-    FeaturesPage,
+    FindSenpaiPage,
     ProductsPage,
     CustomersPage,
     SalesPage,
@@ -12,8 +12,8 @@ import Home, {
 
 const Switcher = () => (
     <Switch>
-        <Route path="/features">
-            <FeaturesPage />
+        <Route path="/findsenpai">
+            <FindSenpaiPage />
         </Route>
         <Route path="/products">
             <ProductsPage />

@@ -29,3 +29,12 @@ __pycache__
 
 # Environment variables
 .ENV
+
+# VS Code
+.vscode/
+
+# Node module
+node_modules/
+
+# Dev container
+.devcontainer/

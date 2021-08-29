@@ -3,13 +3,14 @@ from sqlalchemy import Column, VARCHAR, TIMESTAMP, ForeignKey, Integer, PrimaryK
 from sqlalchemy.sql import func
 
 BaseModel = declarative_base()
+schema_name = "app"
 
 
 class UserModel(BaseModel):
     """
     Define Users database table ORM model
     """
-    __table_args__ = {"schema": "app"}
+    __table_args__ = {"schema": schema_name}
     __tablename__ = "users"
 
     # Register columns
@@ -23,3 +24,16 @@ class UserModel(BaseModel):
     salt = Column(VARCHAR, unique=True)
     created_at = Column(TIMESTAMP, default=func.now())
     PrimaryKeyConstraint(id, name="PK_users_id")
+
+
+class BadgesModel(BaseModel):
+    """
+    Define Badges database table ORM model
+    """
+    __table_args__ = {"schema": schema_name}
+    __tablename__ = "badges"
+
+    # Register columns
+    id = Column(Integer, unique=True, primary_key=True, index=True, autoincrement=True)
+    name = Column(VARCHAR(200), index=True)
+    created_at = Column(TIMESTAMP, default=func.now())

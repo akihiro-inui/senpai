@@ -6,7 +6,7 @@ from datetime import date
 
 class UserSchema(BaseModel):
     """
-    AnnotationTypes database table schema
+    Users database table schema
     It holds all column names and relationship to other tables
     """
     id: int
