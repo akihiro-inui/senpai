@@ -1,33 +1,37 @@
+// Dropdown menue for Find Senpai navibar
 export const items = [
     {
-        categoryName: "CODE",
-        links: [{
-            name: "Code Review",
-            route: "code-review"
+        categoryName: "Work",
+        links: [
+        {
+            name: "Work Condition",
+            route: "work-condition"
         },
         {
-            name: "Project management",
-            route: "project-management"
-        }, {
-            name: "Integration",
-            route: "integration"
-        }, {
-            name: "Hosting",
-            route: "hosting"
+            name: "Work Overseas",
+            route: "work-overseaas"
+        },
+        {
+            name: "Work Preference",
+            route: "work-preference"
         }]
     },
     {
-        categoryName: "TEAM",
+        categoryName: "Study",
         links: [{
-            name: "Discussion",
-            route: "discussion"
+            name: "Study Abroad",
+            route: "study-abroad"
         },
         {
-            name: "Q&A",
-            route: "question-answer"
-        }, {
-            name: "Team management",
-            route: "team-management"
-        },]
+            name: "Degree",
+            route: "degree"
+        }]
+    },
+    {
+        categoryName: "Relathionship",
+        links: [{
+            name: "Long distance",
+            route: "long-distance"
+        }]
     }
 ]

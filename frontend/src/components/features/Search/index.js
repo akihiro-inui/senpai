@@ -4,10 +4,10 @@ import {HOME} from "../../../constants/routes"
 
 const Search = () => {
     
-    // const history=useHistory()
+    const history=useHistory()
     const onSearch=()=>{
         console.log("Searching")
-        // history.push(HOME.link)
+        history.push(HOME.link)
     }    
     return <form className="mr-32 w-1/4
                             xs:text-base xs:ml-2 xs:mr-1 xs:w-full
@@ -22,7 +22,7 @@ const Search = () => {
                    tracking-wide w-full"
         type="search"
         name="search"
-        placeholder="Search timber"
+        placeholder="Search topic"
         aria-label="Search"
         aria-required="false"
     />

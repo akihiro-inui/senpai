@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { NavLink } from "react-router-dom"
-import { FEATURES } from "../../../../../constants/routes"
+import { FINDSENPAI } from "../../../../../constants/routes"
 import Menu from "./Menu"
 
-const FeaturesLink = () => {
+const FindSenpaiLink = () => {
     const [visible, setVisible] = useState(false)
 
     const displayMenu = () => {
@@ -15,14 +15,14 @@ const FeaturesLink = () => {
     return <div className="block"
         onMouseLeave={hideMenu}>
         <NavLink
-            to={FEATURES.link}
+            to={FINDSENPAI.link}
             className="xl:mr-6 sm:mr-8 md:mr-8 mr-4"
             activeClassName="cursor-pointer text-orange-400"
             onMouseOver={displayMenu}
         >
-            {FEATURES.name}
+            {FINDSENPAI.name}
         </NavLink>
         <Menu isVisible={visible} />
     </div>
 }
-export default FeaturesLink
+export default FindSenpaiLink

@@ -26,7 +26,7 @@ const ItemsList = (item) => (
 const Item = (name, route, index) => (
     <div key={index} className={`flex justify-start my-2`}>
         <ItemText name={name} route={route} />
-        {index === 0 && <Badge text="NEW" />}
+        {index === 1 && <Badge text="NEW" />}
     </div>)
 
 export default SubMenu
