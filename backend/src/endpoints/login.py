@@ -1,7 +1,7 @@
 import sqlalchemy
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter
-from ..schemas.users import UserLogin
+from ..schemas.user import UserLogin
 from ..orm_models.db_models import UserModel
 from . import DBC
 from . import hasher

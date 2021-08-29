@@ -2,13 +2,14 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class BadgesSchema(BaseModel):
+class UserCategorySchema(BaseModel):
     """
-    Badges database table schema
+    UserCategory database table schema
     It holds all column names and relationship to other tables
     """
-    id: int
-    name: str
+    id: str
+    user_id: str
+    category_id: str
     created_at: datetime
 
     class Config:

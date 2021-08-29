@@ -1,8 +1,8 @@
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, Response
-from ..schemas.users import UserCreate, UserUpdate, UserGet
-from src.data_layer.users import get_all_users_from_db, get_user_by_email_from_db, create_user_in_db, update_user_in_db, delete_user_from_db
+from ..schemas.user import UserCreate, UserUpdate, UserGet
+from src.data_layer.user import get_all_users_from_db, get_user_by_email_from_db, create_user_in_db, update_user_in_db, delete_user_from_db
 from ..orm_models.db_models import UserModel
 from . import DBC
 from . import hasher
@@ -10,7 +10,7 @@ from . import hasher
 router = APIRouter()
 
 
-@router.get("/users", response_model=List[UserGet])
+@router.get("/user", response_model=List[UserGet])
 def get_all_users_endpoint(db_session: Session = Depends(DBC.get_session)):
     """
     GET all users
@@ -20,7 +20,7 @@ def get_all_users_endpoint(db_session: Session = Depends(DBC.get_session)):
     return Response(status_code=200, content=get_all_users_from_db(db_session))
 
 
-@router.get("/users/email/{user_email}", response_model=UserGet)
+@router.get("/user/email/{user_email}", response_model=UserGet)
 def get_one_user_by_email_endpoint(user_email: str, db_session: Session = Depends(DBC.get_session)):
     """
     GET one user by name
@@ -32,7 +32,7 @@ def get_one_user_by_email_endpoint(user_email: str, db_session: Session = Depend
     return Response(status_code=200, content=get_user_by_email_from_db(user_email, db_session))
 
 
-@router.post("/api/v1/users")
+@router.post("/api/v1/user")
 def post_one_user_endpoint(user: UserCreate, db_session: Session = Depends(DBC.get_session)):
     """
     POST one user
@@ -54,7 +54,7 @@ def post_one_user_endpoint(user: UserCreate, db_session: Session = Depends(DBC.g
     return {"message": "Successfully created user"}
 
 
-@router.put("/users")
+@router.put("/user")
 def put_one_user_endpoint(user: UserUpdate, db_session: Session = Depends(DBC.get_session)):
     """
     PUT one user
@@ -67,7 +67,7 @@ def put_one_user_endpoint(user: UserUpdate, db_session: Session = Depends(DBC.ge
     return Response(status_code=200, content={"message": "Successfully updated user"})
 
 
-@router.delete("/users/email/{user_email}")
+@router.delete("/user/email/{user_email}")
 def delete_one_user_by_email_endpoint(user_email: str, db_session: Session = Depends(DBC.get_session)):
     """
     DELETE one user by ID

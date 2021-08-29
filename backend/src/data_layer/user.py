@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 from fastapi import Depends
 from ..orm_models.db_models import UserModel
-from ..schemas.users import UserGet, UserUpdate
+from ..schemas.user import UserGet, UserUpdate
 from src.utils.custom_error_handlers import DataNotFoundError, PydanticError
 from . import DBC
 

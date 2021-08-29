@@ -6,17 +6,19 @@ from datetime import date
 
 class UserSchema(BaseModel):
     """
-    Users database table schema
+    User database table schema
     It holds all column names and relationship to other tables
     """
-    id: int
+    id: str
     name: str
     email: str
     gender: str
     country: str
     hashed_password: str
-    birthdate: date
+    birth_date: date
     salt: str
+    password_reset_token: str
+    account_activation_token: str
     created_at: datetime
 
     class Config:
@@ -32,19 +34,19 @@ class UserCreate(BaseModel):
     gender: Optional[str]
     country: Optional[str]
     password: str
-    birthdate: Optional[date]
+    birth_date: Optional[date]
 
 
 class UserUpdate(BaseModel):
     """
     Fields information needed for Update
     """
-    id: Optional[int]
+    id: Optional[str]
     name: Optional[str]
     email: str
     gender: Optional[str]
     country: Optional[str]
-    birthdate: Optional[date]
+    birth_date: Optional[date]
     salt: Optional[str]
 
 
@@ -61,5 +63,5 @@ class UserLogin(BaseModel):
 
 
 class UserGet(BaseModel):
-    id: int
+    id: str
     email: str
