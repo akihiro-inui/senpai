@@ -8,7 +8,7 @@ interface UserCreate {
  }
 
 function createUser(userToCreate: UserCreate) {
-  fetch(apiUrl+'v1/users', {
+  fetch(apiUrl+'v1/user', {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',

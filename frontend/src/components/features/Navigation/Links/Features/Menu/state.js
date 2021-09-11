@@ -1,4 +1,4 @@
-// Dropdown menue for Find Senpai navibar
+// Dropdown menu for Find Mentor navibar
 export const items = [
     {
         categoryName: "Work",

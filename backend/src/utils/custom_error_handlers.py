@@ -2,7 +2,7 @@ from src.utils.common_logger import logger
 
 
 class BaseSystemError(Exception):
-    def __init__(self, message, status_code=400):
+    def __init__(self, message, status_code=500):
         self.message = message
         self.status_code = status_code
         logger.error(message)
@@ -27,5 +27,5 @@ class DBError(Exception):
 
 
 class DataNotFoundError(Exception):
-    def __init__(self, message=404):
+    def __init__(self, message):
         super().__init__(message)

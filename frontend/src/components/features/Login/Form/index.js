@@ -45,7 +45,7 @@ class LoginForm extends React.Component {
               this.setState({isAuth: true})
 
               // Redirect the user to mypage
-              this.props.history.push("/findsenpai");
+              this.props.history.push("/findmentor");
             }
           }
           );

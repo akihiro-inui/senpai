@@ -17,6 +17,8 @@ def get_all_users_from_db(db: Session = Depends(DBC.get_session)) -> List[UserGe
     """
     try:
         users = db.query(UserModel).all()
+        if not users:
+            raise NoResultFound
         return [UserGet(id=user.id, email=user.email) for user in users]
     except NoResultFound:
         raise DataNotFoundError("No users were found")

@@ -17,10 +17,10 @@ app = FastAPI()
 
 @app.exception_handler(DataNotFoundError)
 async def validation_exception_handler(request, err):
-    base_error_message = f"Failed to execute: {request.method}: {request.url}"
-    logger.error(base_error_message)
-    return JSONResponse(status_code=400,
-                        content={"message": f"{base_error_message}: Requested data was not found", "detail": f"{err}"})
+    return JSONResponse(status_code=404,
+                        content={"message": "Requested data was not found",
+                                 "detail": f"{err}",
+                                 "data": None})
 
 
 @app.exception_handler(PydanticError)
@@ -53,5 +53,5 @@ app.add_middleware(
 
 if __name__ == "__main__":
     DBC = DBConnector()
-    DBC.process_db()
+    DBC._initialize_db()
     uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")

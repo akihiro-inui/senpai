@@ -1,13 +1,13 @@
-# SENPAI
+# Mentor
 
-## What is Senpai?
+## What is Mentor?
 TBD
 
 # Developers Note
 
 ## How to launch test local database
 ```
-docker run --name senpai-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=senpai -p 5432:5432 -d postgres
+docker run --name mentor-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres  -p 5432:5432 -d postgres
 ```
 
 ## How to run API

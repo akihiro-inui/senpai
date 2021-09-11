@@ -28,11 +28,11 @@ def get_url() -> str:
     :return: Connection string
     """
     load_config(".ENV")
-    host = os.environ.get("SENPAI_DB_HOST")
-    db = os.environ.get("SENPAI_DB_NAME")
-    user = os.environ.get("SENPAI_DB_USER")
-    password = os.environ.get("SENPAI_DB_PASSWORD")
-    port = os.environ.get("SENPAI_DB_PORT")
+    host = os.environ.get("MENTOR_DB_HOST")
+    db = os.environ.get("MENTOR_DB_NAME")
+    user = os.environ.get("MENTOR_DB_USER")
+    password = os.environ.get("MENTOR_DB_PASSWORD")
+    port = os.environ.get("MENTOR_DB_PORT")
     return f"postgresql://{user}:{password}@{host}:{port}/{db}"
 
 

@@ -18,25 +18,27 @@ from src.orm_models.db_models import BaseModel
 
 class DBConnector:
     def __init__(self):
-        self.Meta = MetaData()
-
-    def process_db(self):
-        """
-        Case A: If database does not exist, Create DB, Schema, Tables
-        Case B: If database exists, run Alembic upgrade
-        """
         self.__check_config()
         self.engine = create_engine(self.connection_string)
-
-        # Create or upgrade DB
-        is_created = self._create_db() if not database_exists(self.engine.url) else self._upgrade_db()
-
-        # Create schemas and tables only if database was initialized
-        self._create_schemas() if is_created is True else None
-        self._create_tables() if is_created is True else None
-
-        # Create DB session
+        self.Meta = MetaData()
         self.__init_session_maker()
+
+    def _initialize_db(self):
+        """
+        Initialize database
+        Case A. Create database if it does not exist -> Create schemas and tables
+        Case B. If database already exists -> Upgrade database schema, tables
+        """
+        try:
+            # Create or upgrade DB
+            is_created = self._create_db() if database_exists(self.engine.url) is False else self._upgrade_db()
+
+            # Create schemas and tables only if database was created for the first time
+            if is_created is True:
+                self._create_schemas()
+                self._create_tables()
+        except Exception as err:
+            raise DBError(message=f"Failed to initialize database: {err}")
 
     def __check_config(self):
         """
@@ -47,12 +49,12 @@ class DBConnector:
         if os.path.isfile('.ENV'):
             load_config('.ENV')
 
-        self.DB_USER = os.environ.get('SENPAI_DB_USER')
-        self.DB_PASSWORD = os.environ.get('SENPAI_DB_PASSWORD')
-        self.DB_HOST = os.environ.get('SENPAI_DB_HOST')
-        self.DB_PORT = os.environ.get('SENPAI_DB_PORT')
-        self.DB_NAME = os.environ.get('SENPAI_DB_NAME')
-        self.DB_SCHEMAS = os.environ.get('SENPAI_DB_SCHEMAS').split()
+        self.DB_USER = os.environ.get('MENTOR_DB_USER')
+        self.DB_PASSWORD = os.environ.get('MENTOR_DB_PASSWORD')
+        self.DB_HOST = os.environ.get('MENTOR_DB_HOST')
+        self.DB_PORT = os.environ.get('MENTOR_DB_PORT')
+        self.DB_NAME = os.environ.get('MENTOR_DB_NAME')
+        self.DB_SCHEMAS = os.environ.get('MENTOR_DB_SCHEMAS').split()
 
         # Check required fields exist
         if None in [self.DB_USER,
@@ -154,7 +156,7 @@ class DBConnector:
             yield session
             session.commit()
         except Exception as err:
-            logger.error(f"Error creating session to DB: {err}")
             session.rollback()
+            raise DBError(f"{err}")
         finally:
             session.close()

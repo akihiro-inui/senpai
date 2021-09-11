@@ -14,8 +14,10 @@ class UserSchema(BaseModel):
     email: str
     gender: str
     country: str
-    hashed_password: str
+    is_mentor: bool
+    comment: str
     birth_date: date
+    hashed_password: str
     salt: str
     password_reset_token: str
     account_activation_token: str

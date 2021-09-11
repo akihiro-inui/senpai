@@ -15,7 +15,7 @@ def get_all_users_endpoint(db_session: Session = Depends(DBC.get_session)):
     """
     GET all users
     :param db_session: DB session
-    :return: ALl user entries
+    :return: All user entries
     """
     return Response(status_code=200, content=get_all_users_from_db(db_session))
 

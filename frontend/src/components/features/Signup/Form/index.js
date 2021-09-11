@@ -42,6 +42,8 @@ class SignUpForm extends React.Component {
           }
       catch(error) {
         console.log("Failed to create user " + error);
+
+        // TODO: Show error popup and terminate the process
           }
 
       // If user is created, try to log in
