@@ -1,15 +1,17 @@
 FROM python:3.8
 
-EXPOSE 80
+EXPOSE 5000
 
 COPY . .
 
-ENV DB_HOST=$DB_HOST
-ENV DB_PASSWORD=$DB_PASSWORD
-ENV DB_USER=$DB_USER
-ENV DB_NAME=$DB_NAME
-ENV DB_PORT=$DB_PORT
+ENV MENTOR_DB_HOST=$MENTOR_DB_HOST
+ENV MENTOR_DB_PASSWORD=$MENTOR_DB_PASSWORD
+ENV MENTOR_DB_USER=$MENTOR_DB_USER
+ENV MENTOR_DB_NAME=$MENTOR_DB_NAME
+ENV MENTOR_DB_PORT=$MENTOR_DB_PORT
 
-RUN pip3 install --upgrade pip
+RUN apt-get update
+RUN apt-get install unixodbc-dev -y
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "5000"]

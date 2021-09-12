@@ -11,6 +11,10 @@ from src.utils.common_logger import logger
 from src.database.base import DBConnector
 from src.utils.custom_error_handlers import BaseSystemError, DataNotFoundError, PydanticError
 
+# Initialize DB
+DBC = DBConnector()
+DBC._initialize_db()
+
 # Create API Application
 app = FastAPI()
 
@@ -52,6 +56,4 @@ app.add_middleware(
 
 
 if __name__ == "__main__":
-    DBC = DBConnector()
-    DBC._initialize_db()
-    uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info")
+    uvicorn.run("main:app", host="0.0.0.0", port=5000, log_level="info", reload=True)

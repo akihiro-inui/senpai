@@ -160,3 +160,8 @@ class DBConnector:
             raise DBError(f"{err}")
         finally:
             session.close()
+
+
+if __name__ == "__main__":
+    DBC = DBConnector()
+    DBC._initialize_db()
