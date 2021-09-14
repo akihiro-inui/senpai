@@ -1,8 +1,10 @@
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import Depends, APIRouter, Response
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from ..schemas.user import UserCreate, UserUpdate, UserGet
-from src.data_layer.user import get_all_users_from_db, get_user_by_email_from_db, create_user_in_db, update_user_in_db, delete_user_from_db
+from src.data_layer.user import get_all_users_from_db, get_user_by_email_from_db, get_all_mentors_db, create_user_in_db, update_user_in_db, delete_user_from_db
 from ..orm_models.db_models import UserModel
 from . import DBC
 from . import hasher
@@ -17,7 +19,8 @@ def get_all_users_endpoint(db_session: Session = Depends(DBC.get_session)):
     :param db_session: DB session
     :return: All user entries
     """
-    return Response(status_code=200, content=get_all_users_from_db(db_session))
+    return JSONResponse(status_code=200, content={"data": jsonable_encoder(get_all_users_from_db(db_session)),
+                                                  "message": "Successfully retrieved all users"})
 
 
 @router.get("/user/email/{user_email}", response_model=UserGet)
@@ -29,7 +32,20 @@ def get_one_user_by_email_endpoint(user_email: str, db_session: Session = Depend
     :return: Retrieved user entry
     """
     # Get user by name
-    return Response(status_code=200, content=get_user_by_email_from_db(user_email, db_session))
+    return JSONResponse(status_code=200, content={"data": get_user_by_email_from_db(user_email, db_session),
+                                                  "message": "Successfully retrieved user"})
+
+
+@router.get("/user/mentors", response_model=List[UserGet])
+def get_all_mentors_endpoint(db_session: Session = Depends(DBC.get_session)):
+    """
+    GET all mentors
+    :param db_session: DB session
+    :return: Retrieved user entry
+    """
+    # Get user by name
+    return JSONResponse(status_code=200, content={"data": jsonable_encoder(get_all_mentors_db(db_session)),
+                                                  "message": "Successfully retrieved all mentors"})
 
 
 @router.post("/api/v1/user")
@@ -51,7 +67,7 @@ def post_one_user_endpoint(user: UserCreate, db_session: Session = Depends(DBC.g
 
     # Commit to DB
     create_user_in_db(user_model, db_session)
-    return {"message": "Successfully created user"}
+    return JSONResponse(status_code=200, content={"message": "Successfully created user"})
 
 
 @router.put("/user")
@@ -64,7 +80,7 @@ def put_one_user_endpoint(user: UserUpdate, db_session: Session = Depends(DBC.ge
     :return: Updated user entry
     """
     update_user_in_db(user, db_session)
-    return Response(status_code=200, content={"message": "Successfully updated user"})
+    return JSONResponse(status_code=200, content={"message": "Successfully updated user"})
 
 
 @router.delete("/user/email/{user_email}")
@@ -77,4 +93,4 @@ def delete_one_user_by_email_endpoint(user_email: str, db_session: Session = Dep
     :return: Deleted user entry
     """
     delete_user_from_db(user_email, db_session)
-    return Response(status_code=200, content={"message": "Successfully deleted user"})
+    return JSONResponse(status_code=200, content={"message": "Successfully deleted user"})
