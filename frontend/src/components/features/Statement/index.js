@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { BrandButtonDefault } from "../../library/Button"
+// import AuthExample from '../../../auth/index';
 
 const UniqueValueStatement = () => (
     <p className="xs:text-2xl 
@@ -21,8 +22,9 @@ const GetStartedButton = () => (
             classes="xs:py-3 xs:px-4 xs:text-sm
                      sm:py-3 sm:px-4 sm:text-sm
                      w-auto px-8 py-4 mt-8"
-        />
-    </Link>)
+                     />
+    </Link>
+    )
 
 export default UniqueValueStatement
 export {GetStartedButton}
