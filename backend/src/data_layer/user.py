@@ -46,6 +46,25 @@ def get_user_by_email_from_db(user_email: str, db: Session = Depends(DBC.get_ses
         raise err
 
 
+def get_all_mentors_db(db: Session = Depends(DBC.get_session)) -> List[UserGet]:
+    """
+    Get all users who are mentors
+    :param db: DB session
+    :return: List of UserGet
+    """
+    try:
+        users = db.query(UserModel).filter(UserModel.is_mentor == True).all()
+        if not users:
+            raise NoResultFound
+        return [UserGet(id=user.id, name=user.name, email=user.email, comment=user.comment) for user in users]
+    except NoResultFound:
+        raise DataNotFoundError("No users were found")
+    except ValidationError:
+        raise PydanticError("Wrong Pydantic data format when retrieving user")
+    except Exception as err:
+        raise err
+
+
 def create_user_in_db(user: UserModel, db_session: Session = Depends(DBC.get_session)):
     """
     Create one user

@@ -10,14 +10,10 @@ TBD
 docker run --name mentor-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres  -p 5432:5432 -d postgres
 ```
 
-## How to run API
+## How to run Backend API
 Manually,
 ``` 
 cd backend && pip install -r requirements.txt && &python src/main.py
-```
-with Docker,
-``` 
-TODO
 ```
 
 ## How to run Frontend application
@@ -25,9 +21,18 @@ Manually,
 ```
 cd frontend && npm build && npm start
 ```
-with Docker,
+
+## Run whole app with docker compose
+1. Make a file called .ENV in your project root folder
+
+2. Build images
 ```
-TODO
+docker-compose build
+```
+
+3. Run containers
+```
+docker-compose --env-file .ENV up -d
 ```
 
 ## How to make changes in DB schema, tables
