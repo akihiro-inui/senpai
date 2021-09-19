@@ -1,10 +1,12 @@
-import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom';
+import React from "react"
+import { Redirect, Route } from 'react-router-dom';
 
 const UnAuthRoute = (props) => {
-    const jwt_token = localStorage.getItem('jwt_tiken')
+        // Get locally stored jwt token
+    const jwt_token = localStorage.getItem('jwt_token')
     const isAuthenticated = jwt_token != null // Check if user has jwt token (Logged in already)
     if (isAuthenticated) {
-        console.log(`ログイン済みのユーザーは${props.path}へはアクセスできません`)
+        console.log(`User already logged in. Can not access to ${props.path}`)
         return <Redirect to="/" />
     } else {
         return <Route {...props} />

@@ -1,13 +1,14 @@
 import React from "react"
-import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 
-const PrivateRoute = () => {
-    const jwt_token = localStorage.getItem('jwt_tiken')
+const PrivateRoute = (props) => {
+    // Get locally stored jwt token
+    const jwt_token = localStorage.getItem('jwt_token')
     const isAuthenticated = jwt_token != null // Check if user has jwt token (Logged in already)
     if (isAuthenticated) {
       return <Route {...props}/>
     }else{
-      console.log(`ログインしていないユーザーは${props.path}へはアクセスできません`)
+      console.log(`User has not logged in. Can not access to ${props.path}`)
       return <Redirect to="/login"/>
     }
   }

@@ -10,6 +10,9 @@ import Home, {
     MyPage
 } from "../../../pages"
 
+import PrivateRoute from "../../../app/PrivateAuth"
+import UnAuthRoute from "../../../app/UnAuth"
+
 const Switcher = () => (
     <Switch>
         <Route path="/findmentor">
@@ -24,15 +27,15 @@ const Switcher = () => (
         <Route path="/sales">
             <SalesPage />
         </Route>
-        <Route path="/login">
+        <UnAuthRoute path="/login">
             <LoginPage />
-        </Route>
-        <Route path="/signup">
+        </UnAuthRoute>
+        <UnAuthRoute path="/signup">
             <SignUpPage />
-        </Route>
-        <Route path="/mypage">
+        </UnAuthRoute>
+        <PrivateRoute path="/mypage">
             <MyPage />
-        </Route>
+        </PrivateRoute>
         <Route path="/">
             <Home />
         </Route>
