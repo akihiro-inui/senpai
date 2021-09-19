@@ -21,7 +21,7 @@ const GetStartedButton = () => (
             classes="xs:py-3 xs:px-4 xs:text-sm
                      sm:py-3 sm:px-4 sm:text-sm
                      w-auto px-8 py-4 mt-8"
-                     />
+        />
     </Link>
     )
 
