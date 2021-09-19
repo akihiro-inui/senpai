@@ -1,7 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { BrandButtonDefault } from "../../library/Button"
-// import AuthExample from '../../../auth/index';
 
 const UniqueValueStatement = () => (
     <p className="xs:text-2xl 
