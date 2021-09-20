@@ -40,7 +40,7 @@ services:
          condition: service_healthy
 
   database:
-     container_name: database
+     container_name: psql-database
      image: postgres
      restart: always
      healthcheck:
@@ -54,7 +54,66 @@ services:
      volumes:
          - db_volume:/var/lib/postgresql
      ports:
-         - 5432:5432
+        - 5432:5432
+
+  elasticsearch:
+     container_name: elasticsearch
+     build:
+         context: ./
+         dockerfile: ./elastic/Dockerfile
+     healthcheck:
+         test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+         interval: 30s
+         timeout: 30s
+         retries: 3
+     networks:
+       - es-net
+     ports:
+       - 9200:9200
+       - 9300:9300
+
+  logstash:
+     container_name: logstash
+     image: logstash:7.14.1
+     depends_on:
+       elasticsearch:
+         condition: service_healthy
+     healthcheck:
+      test: bin/logstash -t
+      interval: 60s
+      timeout: 50s
+      retries: 5
+     links:
+       - elasticsearch
+     networks:
+       - es-net
+     volumes:
+       - "./logstash:/config-dir"
+     command: logstash -f /config-dir/logstash.conf
+     ports:
+       - 9600:9600
+
+  kibana:
+     container_name: kibana
+     image: docker.elastic.co/kibana/kibana:7.11.0
+     depends_on:
+       elasticsearch:
+          condition: service_healthy
+     healthcheck:
+       test: curl --cacert /usr/share/elasticsearch/config/certs/ca/ca.crt -s https://localhost:5601 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+       interval: 30s
+       timeout: 10s
+       retries: 5
+     networks:
+       - es-net
+     links:
+       - elasticsearch
+     ports:
+       - 5601:5601
+
+networks:
+  es-net:
+    driver: bridge
 
 volumes:
   db_volume: {}
