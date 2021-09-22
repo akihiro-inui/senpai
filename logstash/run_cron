@@ -1,0 +1,1 @@
+* * * * * /usr/share/logstash/bin/logstash -f sync_user.cnf >> /var/log/cron.log 2>&1
