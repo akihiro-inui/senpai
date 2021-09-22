@@ -22,7 +22,8 @@ const GetStartedButton = () => (
                      sm:py-3 sm:px-4 sm:text-sm
                      w-auto px-8 py-4 mt-8"
         />
-    </Link>)
+    </Link>
+    )
 
 export default UniqueValueStatement
 export {GetStartedButton}

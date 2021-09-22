@@ -5,6 +5,8 @@ import Login from "../pages/Login"
 import SignUp from "../pages/SignUp"
 import MyPage from "../pages/Mypage"
 import FindMentorPage from "../pages/FindMentor"
+import UnAuthRoute from "../app/UnAuth"
+import PrivateRoute from "../app/PrivateAuth"
 
 const Switcher = () => (
     <Switch>
@@ -23,15 +25,15 @@ const Switcher = () => (
         <Route path="/login">
             <Login />
         </Route>
-        <Route path="/signup">
+        <UnAuthRoute path="/signup">
             <SignUp />
-        </Route>
+        </UnAuthRoute>
         <Route path="/">
             <TestPage />
         </Route>
-        <AuthRoute path="/mypage">
+        <PrivateRoute path="/mypage">
             <MyPage />
-        </AuthRoute>
+        </PrivateRoute>
     </Switch>)
 
 export default Switcher
