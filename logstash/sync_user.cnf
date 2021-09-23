@@ -1,0 +1,25 @@
+# file: sync_user.cnf
+input {
+    jdbc {
+
+        # Connection string to database
+        jdbc_connection_string => "jdbc:postgresql://database:5432/mentor?currentSchema=app&user=postgres&password=postgres"
+        jdbc_user => "postgres"
+        jdbc_validate_connection => true
+
+        # Path to PostgreSQL driver
+        jdbc_driver_library => "/usr/share/java/postgresql-9.4.1212.jar"
+        jdbc_driver_class => "org.postgresql.Driver"
+
+        # SQL statement
+        statement => "SELECT * from app.user"
+    }
+}
+output {
+    elasticsearch {
+        index => "users"
+        document_type => "user"
+        document_id => "%{id}"
+        hosts => "elasticsearch"
+    }
+}

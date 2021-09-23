@@ -9,6 +9,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - "./frontend:/frontend"
+    networks:
+      - es-net
+    links:
+      - elasticsearch
     ports:
       - 3000:3000
     environment:
@@ -33,6 +37,8 @@ services:
          - MENTOR_DB_PORT=$MENTOR_DB_PORT
          - MENTOR_DB_PASSWORD=$MENTOR_DB_PASSWORD
          - MENTOR_DB_SCHEMAS=$MENTOR_DB_SCHEMAS
+     networks:
+       - ps-net
      ports:
          - 5000:5000
      depends_on:
@@ -48,6 +54,8 @@ services:
        interval: 10s
        timeout: 5s
        retries: 5
+     networks:
+       - ps-net
      environment:
          - POSTGRES_USER=$MENTOR_DB_USER
          - POSTGRES_PASSWORD=$MENTOR_DB_PASSWORD
@@ -59,8 +67,8 @@ services:
   elasticsearch:
      container_name: elasticsearch
      build:
-         context: ./
-         dockerfile: ./elastic/Dockerfile
+         context: ./elastic
+         dockerfile: Dockerfile
      healthcheck:
          test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
          interval: 30s
@@ -74,12 +82,14 @@ services:
 
   logstash:
      container_name: logstash
-     image: logstash:7.14.1
+     build:
+         context: ./logstash
+         dockerfile: Dockerfile
      depends_on:
        elasticsearch:
          condition: service_healthy
      healthcheck:
-      test: bin/logstash -t
+      test: /usr/share/logstash/bin/logstash -t
       interval: 60s
       timeout: 50s
       retries: 5
@@ -87,9 +97,9 @@ services:
        - elasticsearch
      networks:
        - es-net
+       - ps-net
      volumes:
        - "./logstash:/config-dir"
-     command: logstash -f /config-dir/logstash.conf
      ports:
        - 9600:9600
 
@@ -113,6 +123,8 @@ services:
 
 networks:
   es-net:
+    driver: bridge
+  ps-net:
     driver: bridge
 
 volumes:
