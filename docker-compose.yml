@@ -9,6 +9,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - "./frontend:/frontend"
+    networks:
+      - es-net
+    links:
+      - elasticsearch
     ports:
       - 3000:3000
     environment:
@@ -42,7 +46,7 @@ services:
          condition: service_healthy
 
   database:
-     container_name: database
+     container_name: psql-database
      image: postgres
      restart: always
      healthcheck:

@@ -1,0 +1,14 @@
+.data-search .input {
+    color: black;
+  }
+  
+  .data-search .list li {
+    background-color: #aaa !important;
+    color: #000;
+    overflow: hidden;
+  }
+  
+  .data-search .list li:target {
+    background-color: #666 !important;
+  }
+  
