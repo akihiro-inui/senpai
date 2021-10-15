@@ -5,9 +5,10 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@appbaseio/reactivesearch": "^3.24.0",
+    "@appbaseio/reactivesearch": "^3.24.1",
     "@types/react-router-dom": "^5.1.8",
     "msw": "^0.35.0",
+    "prop-types": "^15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-router-dom": "^5.2.0",
