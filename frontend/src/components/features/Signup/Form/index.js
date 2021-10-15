@@ -49,10 +49,11 @@ class SignUpForm extends React.Component {
       // If user is created, try to log in
       try {
           // Try to get jwt token by logging in
+          this.props.history.push("/mypage");
           loginUser({email: event.target[1].value, password: event.target[2].value}).then(data => {
             const jwt_token = data['jwt_token']
-            
-            // Check jwt token is returned from serverside
+
+            // Check jwt token is returned from server side
             if(jwt_token==null){
               console.log("jwt token is null")
             }

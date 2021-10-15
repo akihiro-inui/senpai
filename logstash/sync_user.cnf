@@ -8,7 +8,7 @@ input {
         jdbc_validate_connection => true
 
         # Path to PostgreSQL driver
-        jdbc_driver_library => "/usr/share/java/postgresql-9.4.1212.jar"
+        jdbc_driver_library => "/usr/share/java/postgresql.jar"
         jdbc_driver_class => "org.postgresql.Driver"
 
         # SQL statement

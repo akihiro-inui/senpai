@@ -1,7 +1,6 @@
 import React from "react"
 import '../../assets/search.css'
 import {DataSearch, ReactiveBase, ReactiveList, ResultList, SelectedFilters, SingleRange, RangeSlider, MultiDataList, DateRange} from '@appbaseio/reactivesearch';
-import Statement, { GetStartedButton } from "../../components/features/Statement"
 
 const { ResultListWrapper } = ReactiveList;
 
@@ -30,11 +29,11 @@ const FindMentorPage = () => (
             {/* Search Bar */}
             <DataSearch
                 componentId="title"
-                dataField={["ResponseName"]}
+                dataField={["name"]}
                 queryFormat="and"
-                placeholder="search mentor"
-                showIcon={false}
-                title="Search Mentor"
+                placeholder="Search mentor"
+                showIcon={true}
+                title=""
                 className="data-search"
                 innerClass={{
                     input: 'input',
@@ -43,7 +42,7 @@ const FindMentorPage = () => (
             />
 
             {/* Search Result list */}
-            <div className="result-container">                                    
+            <div className="result-container">
                 <ReactiveList
                     defaultQuery={() => ({ track_total_hits: true })}
                     componentId="resultLists"
@@ -75,7 +74,7 @@ const FindMentorPage = () => (
                                                 }}
                                             />
                                             <ResultList.Description>
-                                            <p className="name">{item.comment}</p>
+                                            <p className="mail">{item.email}</p><p className="comment">{item.comment}</p>
                                             </ResultList.Description>
                                         </ResultList.Content>
                                     </ResultList>
