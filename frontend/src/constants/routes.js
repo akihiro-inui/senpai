@@ -1,5 +1,5 @@
 export const HOME = { name: "Home", link: "/" };
-export const FINDMENTOR = { name: "Find Mentor", link: "/features" };
+export const FINDMENTOR = { name: "Find Mentor", link: "/findmentor" };
 export const PRODUCTS = { name: "Products", link: "/products" };
 export const CUSTOMERS = { name: "Customers", link: "/customers" };
 export const SALES = { name: "Sales", link: "/sales" };

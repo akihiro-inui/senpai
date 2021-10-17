@@ -23,103 +23,106 @@ services:
       - backend
 
   backend:
-     container_name: backend
-     restart: always
-     build:
-         context: ./backend
-         dockerfile: Dockerfile
-     volumes:
-       - "./backend:/backend"
-     environment:
-         - MENTOR_DB_HOST=$MENTOR_DB_HOST
-         - MENTOR_DB_NAME=$MENTOR_DB_NAME
-         - MENTOR_DB_USER=$MENTOR_DB_USER
-         - MENTOR_DB_PORT=$MENTOR_DB_PORT
-         - MENTOR_DB_PASSWORD=$MENTOR_DB_PASSWORD
-         - MENTOR_DB_SCHEMAS=$MENTOR_DB_SCHEMAS
-     networks:
-       - ps-net
-     ports:
-         - 5000:5000
-     depends_on:
-       database:
-         condition: service_healthy
+    container_name: backend
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - "./backend:/backend"
+    environment:
+      - MENTOR_DB_HOST=$MENTOR_DB_HOST
+      - MENTOR_DB_NAME=$MENTOR_DB_NAME
+      - MENTOR_DB_USER=$MENTOR_DB_USER
+      - MENTOR_DB_PORT=$MENTOR_DB_PORT
+      - MENTOR_DB_PASSWORD=$MENTOR_DB_PASSWORD
+      - MENTOR_DB_SCHEMAS=$MENTOR_DB_SCHEMAS
+    networks:
+      - ps-net
+    links:
+      - database
+    ports:
+      - 5000:5000
+    depends_on:
+      database:
+        condition: service_healthy
 
   database:
-     container_name: psql-database
-     image: postgres
-     restart: always
-     healthcheck:
-       test: ["CMD-SHELL", "pg_isready"]
-       interval: 10s
-       timeout: 5s
-       retries: 5
-     networks:
-       - ps-net
-     environment:
-         - POSTGRES_USER=$MENTOR_DB_USER
-         - POSTGRES_PASSWORD=$MENTOR_DB_PASSWORD
-     volumes:
-         - db_volume:/var/lib/postgresql
-     ports:
-        - 5432:5432
+    container_name: database
+    image: postgres:14
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ps-net
+    environment:
+      - POSTGRES_USER=$MENTOR_DB_USER
+      - POSTGRES_PASSWORD=$MENTOR_DB_PASSWORD
+    volumes:
+      - db_volume:/var/lib/postgresql
+    ports:
+      - 5432:5432
 
   elasticsearch:
-     container_name: elasticsearch
-     build:
-         context: ./elastic
-         dockerfile: Dockerfile
-     healthcheck:
-         test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
-         interval: 30s
-         timeout: 30s
-         retries: 3
-     networks:
-       - es-net
-     ports:
-       - 9200:9200
-       - 9300:9300
+    container_name: elasticsearch
+    build:
+      context: ./elastic
+      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - es-net
+    ports:
+      - 9200:9200
+      - 9300:9300
 
   logstash:
-     container_name: logstash
-     build:
-         context: ./logstash
-         dockerfile: Dockerfile
-     depends_on:
-       elasticsearch:
-         condition: service_healthy
-     healthcheck:
+    container_name: logstash
+    build:
+      context: ./logstash
+      dockerfile: Dockerfile
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
       test: /usr/share/logstash/bin/logstash -t
       interval: 60s
       timeout: 50s
       retries: 5
-     links:
-       - elasticsearch
-     networks:
-       - es-net
-       - ps-net
-     volumes:
-       - "./logstash:/config-dir"
-     ports:
-       - 9600:9600
+    links:
+      - elasticsearch
+      - database
+    networks:
+      - es-net
+      - ps-net
+    volumes:
+      - "./logstash:/config-dir"
+    ports:
+      - 9600:9600
 
   kibana:
-     container_name: kibana
-     image: docker.elastic.co/kibana/kibana:7.11.0
-     depends_on:
-       elasticsearch:
-          condition: service_healthy
-     healthcheck:
-       test: curl --cacert /usr/share/elasticsearch/config/certs/ca/ca.crt -s https://localhost:5601 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
-       interval: 30s
-       timeout: 10s
-       retries: 5
-     networks:
-       - es-net
-     links:
-       - elasticsearch
-     ports:
-       - 5601:5601
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.11.0
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: curl --cacert /usr/share/elasticsearch/config/certs/ca/ca.crt -s https://localhost:5601 >/dev/null; if [[ $$? == 52 ]]; then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - es-net
+    links:
+      - elasticsearch
+    ports:
+      - 5601:5601
 
 networks:
   es-net:
