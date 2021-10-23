@@ -9,7 +9,7 @@ import { loginUser } from "../../../../api/login"
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.setState({isAuth: false});
+        // this.setState({isAuth: false});
         this.state = {
           email: "",
           password: "",
@@ -42,7 +42,7 @@ class LoginForm extends React.Component {
             else{
               localStorage.setItem('jwt_token', jwt_token);
               console.log("Successfully logged in");
-              this.setState({isAuth: true})
+              // this.setState({isAuth: true})
 
               // Redirect the user to mypage
               this.props.history.push("/findmentor");

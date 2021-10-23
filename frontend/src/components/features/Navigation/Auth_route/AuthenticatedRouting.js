@@ -1,27 +1,28 @@
 import React from 'react';
-import { Switch, Route } from "react-router-dom"
-import TestPage from "../../pages/TestPage"
-import MyPage from "../../pages/Mypage"
-import FindMentorPage from "../../pages/FindMentor"
-import PrivateRoute from "../../app/PrivateAuth"
+import { Switch, Route, Redirect } from "react-router-dom"
+// import TestPage from "../../pages/TestPage"
+import MyPage from "../../../../pages/Mypage"
+import FindMentorPage from "../../../../pages/FindMentor"
+import PrivateRoute from "../../../../app/PrivateAuth"
+import Products from '../../../../pages/Products';
+import Customers from '../../../../pages/Customers';
+import Sales from '../../../../pages/Sales';
+import Home from '../../../../pages/Home';
 
 const AuthenticatedRouting = () => {
   return (
     <Switch>
-      <Route path="/">
-          <TestPage />
-      </Route>
       <Route path="/findmentor">
           <FindMentorPage />
       </Route>
       <Route path="/products">
-          <TestPage />
+          <Products />
       </Route>
       <Route path="/customers">
-          <TestPage />
+          <Customers />
       </Route>
       <Route path="/sales">
-          <TestPage />
+          <Sales />
       </Route>
 
       <PrivateRoute path="/mypage">

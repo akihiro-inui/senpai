@@ -3,6 +3,7 @@ import Switcher from './Switcher';
 import Linker from "./Linker"
 import { AuthenticatedMenus, NotAuthenticatedMenus, AuthenticatedRouting, NotAuthenticatedRouting } from './Auth_route/index'
 import PropTypes from 'prop-types';
+import { BrowserRouter } from 'react-router-dom';
 
 
 const Navigation = (props) => {
@@ -20,7 +21,7 @@ const Navigation = (props) => {
         );        
       };
 
-Routing.propTypes = {authenticated: PropTypes.bool};
+Navigation.propTypes = {authenticated: PropTypes.bool};
 
 export default Navigation
 export { Switcher }

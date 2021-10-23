@@ -19,7 +19,7 @@ const BrandButtonLarge = (props) => {
 export const Button = ({
     type,
     value,
-    event,
+    // event,
     classes }) => {
 
     if (type === "submit") {
@@ -27,7 +27,8 @@ export const Button = ({
             className={classes}
             type={type}
             value={value}
-            onSubmit={event} />)
+            // onSubmit={event} 
+            />)
     }
 
     if (type === "button") {
@@ -35,7 +36,8 @@ export const Button = ({
             className={classes}
             type={type}
             value={value}
-            onClick={event} />)
+            // onClick={event} 
+            />)
     }
 
 }
@@ -43,7 +45,7 @@ export const Button = ({
 Button.propTypes = {
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
-    event: PropTypes.func.isRequired,
+    // event: PropTypes.func.isRequired,
     classes: PropTypes.string
 }
 

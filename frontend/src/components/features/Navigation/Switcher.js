@@ -15,9 +15,9 @@ import UnAuthRoute from "../../../app/UnAuth"
 
 const Switcher = () => (
     <Switch>
-        <Route path="/findmentor">
+        <PrivateRoute path="/findmentor">
             <FindMentorPage />
-        </Route>
+        </PrivateRoute>
         <Route path="/products">
             <ProductsPage />
         </Route>
